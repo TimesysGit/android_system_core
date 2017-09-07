@@ -62,6 +62,7 @@ struct healthd_config {
     android::String8 batteryTechnologyPath;
     android::String8 batteryCurrentNowPath;
     android::String8 batteryChargeCounterPath;
+    android::String8 batteryEnergyFullDesignPath;
 };
 
 // The following are implemented in libhealthd_board to handle board-specific
