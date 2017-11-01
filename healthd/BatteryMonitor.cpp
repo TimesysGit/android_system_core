@@ -190,7 +190,7 @@ bool BatteryMonitor::update(void) {
     if (!mHealthdConfig->batteryPresentPath.isEmpty())
         props.batteryPresent = getBooleanField(mHealthdConfig->batteryPresentPath);
     else
-        props.batteryPresent = true;
+        props.batteryPresent = false;
 
     props.batteryLevel = getIntField(mHealthdConfig->batteryCapacityPath) * 100 / BATTERY_SCALE_FACTOR;
 	if (props.batteryLevel > 100) props.batteryLevel = 100;
