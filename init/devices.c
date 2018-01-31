@@ -62,6 +62,7 @@ struct uevent {
     const char *firmware;
     const char *partition_name;
     const char *device_name;
+    const char *dm_verity_err_block_nr;
     int partition_num;
     int major;
     int minor;
@@ -324,6 +325,7 @@ static void parse_event(const char *msg, struct uevent *uevent)
     uevent->partition_name = NULL;
     uevent->partition_num = -1;
     uevent->device_name = NULL;
+    uevent->dm_verity_err_block_nr = NULL;
 
         /* currently ignoring SEQNUM */
     while(*msg) {
@@ -354,6 +356,9 @@ static void parse_event(const char *msg, struct uevent *uevent)
         } else if(!strncmp(msg, "DEVNAME=", 8)) {
             msg += 8;
             uevent->device_name = msg;
+        } else if(!strncmp(msg, "DM_VERITY_ERR_BLOCK_NR=", 23)) {
+            msg += 23;
+            uevent->dm_verity_err_block_nr = msg;
         }
 
         /* advance to after the next \0 */
@@ -829,6 +834,15 @@ void handle_device_fd()
 
         struct uevent uevent;
         parse_event(msg, &uevent);
+        if(uevent.dm_verity_err_block_nr != NULL) {
+            ERROR("verity error detected!");
+            /* Note: Can't use 'property_set' here, it would be init's version
+             * meant to be called from pid 1 unlike any other process. The 
+             * 'property_set' available to normal processes just wraps
+             * __system_property_set. This will notify init properly.
+             */
+            __system_property_set("ueventd.emergency_event", "verity_error");
+        }
 
         handle_device_event(&uevent);
         handle_firmware_event(&uevent);
