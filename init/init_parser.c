@@ -95,6 +95,7 @@ int lookup_keyword(const char *s)
         break;
     case 'd':
         if (!strcmp(s, "isabled")) return K_disabled;
+        if (!strcmp(s, "isplay")) return K_display;
         if (!strcmp(s, "omainname")) return K_domainname;
         break;
     case 'e':

@@ -233,6 +233,11 @@ int do_class_reset(int nargs, char **args)
     return 0;
 }
 
+int do_display(int nargs, char **args)
+{
+    return load_565rle_image(args[1]);
+}
+
 int do_domainname(int nargs, char **args)
 {
     return write_file("/proc/sys/kernel/domainname", args[1]);
