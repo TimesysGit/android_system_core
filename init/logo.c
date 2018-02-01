@@ -52,6 +52,7 @@ struct FB {
 #define fb_bpp(fb) ((fb)->vi.bits_per_pixel)
 #define fb_size(fb) ((fb)->vi.xres * (fb)->vi.yres * \
 	((fb)->vi.bits_per_pixel/8))
+#define fb_offset(fb,color) ((fb)->vi.color.offset)
 
 static int fb_open(struct FB *fb)
 {
@@ -153,8 +154,8 @@ int load_565rle_image(char *fn)
             blue = ((ptr[1]) & 0x1F);
             blue = (blue << 3) | (blue >> 2);
             alpha = 0xff;
-            rgb32 = (alpha << 24) | (red << 16)
-                    | (green << 8) | (blue << 0);
+            rgb32 = (alpha << fb_offset(&fb,transp) | (red << fb_offset(&fb,red))
+                    | (green << fb_offset(&fb,green)) | (blue << fb_offset(&fb,blue)));
             android_memset32((uint32_t *)bits, rgb32, n << 2);
             bits += (n * 2);
         }
