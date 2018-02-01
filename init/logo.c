@@ -168,7 +168,6 @@ int load_565rle_image(char *fn)
     fb_update(&fb);
     fb_close(&fb);
     close(fd);
-    unlink(fn);
     return 0;
 
 fail_unmap_data:
