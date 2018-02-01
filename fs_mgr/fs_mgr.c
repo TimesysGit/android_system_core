@@ -606,6 +606,7 @@ int fs_mgr_mount_all(struct fstab *fstab)
         if (fstab->recs[i].fs_mgr_flags & MF_VERIFY) {
             if (fs_mgr_setup_verity(&fstab->recs[i]) < 0) {
                 ERROR("Could not set up verified partition, skipping!");
+                property_set("ueventd.emergency_event", "verity_error");
                 continue;
             }
         }
@@ -691,6 +692,7 @@ int fs_mgr_do_mount(struct fstab *fstab, char *n_name, char *n_blk_device,
         if (fstab->recs[i].fs_mgr_flags & MF_VERIFY) {
             if (fs_mgr_setup_verity(&fstab->recs[i]) < 0) {
                 ERROR("Could not set up verified partition, skipping!");
+                property_set("ueventd.emergency_event", "verity_error");
                 continue;
             }
         }
