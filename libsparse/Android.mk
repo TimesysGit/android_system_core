@@ -60,6 +60,15 @@ LOCAL_STATIC_LIBRARIES := \
     libz
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := simg2img.c \
+    sparse_crc32.c
+LOCAL_MODULE := simg2img_sbin
+LOCAL_FORCE_STATIC_EXECUTABLE := true
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT_SBIN)
+LOCAL_UNSTRIPPED_PATH := $(TARGET_ROOT_OUT_SBIN_UNSTRIPPED)
+LOCAL_STATIC_LIBRARIES := liblog libcutils libc libsparse_static libz
+include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := img2simg.c
